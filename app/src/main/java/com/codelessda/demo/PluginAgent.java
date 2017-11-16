@@ -3,25 +3,59 @@ package com.codelessda.demo;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 
-/**
- * Created by zhangdan on 17/3/3.
- *
- * todo 在该类中添加要注入的具体代码
- */
 
 public class PluginAgent {
 
     private static final String TAG = PluginAgent.class.getSimpleName();
 
+    private static Activity getActivityFromView(View view) {
+        Context context = view.getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            }
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return null;
+    }
+
+    private static String getActivityNameFromView(View view) {
+        Activity act = getActivityFromView(view);
+        if(act != null) {
+            return act.getClass().getName();
+        }
+        else return null;
+    }
+
+    private static String getViewPath(View view) {
+        String viewType = view.getClass().getSimpleName();
+        ViewParent parent = view.getParent();
+        if( parent instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) parent;
+            int index = vg.indexOfChild(view);
+            return getViewPath((View)parent) +parent.getClass().getName()+ "["+index+"]";
+        }
+        else return parent.getClass().getSimpleName()+"[0]";
+    }
+
+    private static void track(View v, String evt) {
+        Log.d(TAG, getActivityNameFromView(v) + "," + evt + "," + getViewPath(v) + "," + System.currentTimeMillis());
+    }
+
     public static void onClick(View view) {
-        Log.d(TAG, "我被成功注入啦");
+        track(view, "click");
     }
 
     public static void onClick(Object object, DialogInterface dialogInterface, int which) {

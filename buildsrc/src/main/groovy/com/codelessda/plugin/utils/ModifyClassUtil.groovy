@@ -1,5 +1,6 @@
 package com.codelessda.plugin.utils
 
+import com.codelessda.plugin.InjectTransform
 import com.codelessda.plugin.MethodCell
 import com.codelessda.plugin.ReWriterConfig
 import org.objectweb.asm.*
@@ -114,7 +115,7 @@ public class ModifyClassUtil {
                     // call super
                     visitMethodWithLoadedParams(mv, Opcodes.INVOKESPECIAL, superName, methodCell.name, methodCell.desc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
                     // call injected method
-                    visitMethodWithLoadedParams(mv, Opcodes.INVOKESTATIC, ReWriterConfig.sAgentClassName, methodCell.agentName, methodCell.agentDesc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
+                    visitMethodWithLoadedParams(mv, Opcodes.INVOKESTATIC, InjectTransform.project.codelessdaConfig.agentClassName, methodCell.agentName, methodCell.agentDesc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
                     mv.visitInsn(Opcodes.RETURN);
                     mv.visitMaxs(methodCell.paramsCount, methodCell.paramsCount);
                     mv.visitEnd();
@@ -188,7 +189,7 @@ public class ModifyClassUtil {
                                 @Override
                                 void visitCode() {
                                     super.visitCode();
-                                    visitMethodWithLoadedParams(methodVisitor, Opcodes.INVOKESTATIC, ReWriterConfig.sAgentClassName, methodCell.agentName, methodCell.agentDesc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
+                                    visitMethodWithLoadedParams(methodVisitor, Opcodes.INVOKESTATIC, InjectTransform.project.codelessdaConfig.agentClassName, methodCell.agentName, methodCell.agentDesc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
                                 }
                             }
                         } catch (Exception e) {
@@ -216,7 +217,7 @@ public class ModifyClassUtil {
 
                                     // 确保super.onHiddenChanged(hidden);等先被调用
                                     if (opcode == Opcodes.RETURN) { //在返回之前安插代码
-                                        visitMethodWithLoadedParams(methodVisitor, Opcodes.INVOKESTATIC, ReWriterConfig.sAgentClassName, methodCell.agentName, methodCell.agentDesc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
+                                        visitMethodWithLoadedParams(methodVisitor, Opcodes.INVOKESTATIC, InjectTransform.project.codelessdaConfig.agentClassName, methodCell.agentName, methodCell.agentDesc, methodCell.paramsStart, methodCell.paramsCount, methodCell.opcodes)
                                     }
                                     super.visitInsn(opcode);
                                 }

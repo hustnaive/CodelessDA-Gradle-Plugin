@@ -8,11 +8,6 @@ import jdk.internal.org.objectweb.asm.Opcodes
 
 public class ReWriterConfig {
 
-    /**
-     * 必须是全路径形式，不是点分形式的包名
-     */
-    public static String sAgentClassName = 'com/codelessda/demo/PluginAgent'
-
 //    String name
 //    String desc
 //    String parent

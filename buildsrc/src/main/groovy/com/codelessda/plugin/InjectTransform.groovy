@@ -27,7 +27,7 @@ public class InjectTransform extends Transform {
     static AppExtension android
     // our plugin will inject 'butterknife.internal.DebouncingOnClickListener' by default.
     static HashSet<String> targetPackages = ['butterknife.internal.DebouncingOnClickListener'];
-    private static Project project;
+    static Project project;
 
     public InjectTransform(Project project) {
         InjectTransform.project = project

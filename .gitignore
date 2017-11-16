@@ -2,7 +2,7 @@
 .idea/
 .DS_Store
 */.DS_Store
-.gradle/2.14.1/tasks/
+.gradle/*
 /app/build
 /app/.gitignore
 /buildsrc/.gradle/
